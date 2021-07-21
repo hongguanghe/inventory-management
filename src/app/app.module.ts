@@ -47,10 +47,13 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { AppRoutingModule } from './app-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
+<<<<<<< HEAD
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavSidebarComponent } from './nav/nav-sidebar/nav-sidebar.component';
+=======
+>>>>>>> parent of d239190 (Add Packages)
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { NavSidebarComponent } from './nav/nav-sidebar/nav-sidebar.component';
   ],
   imports: [
     BrowserModule,
+<<<<<<< HEAD
     AppRoutingModule,
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
@@ -114,6 +118,9 @@ import { NavSidebarComponent } from './nav/nav-sidebar/nav-sidebar.component';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+=======
+    AppRoutingModule
+>>>>>>> parent of d239190 (Add Packages)
   ],
   providers: [],
   bootstrap: [AppComponent]
