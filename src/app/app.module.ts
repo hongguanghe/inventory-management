@@ -22,6 +22,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { AssociatedBatchesComponent } from './pages/associated-batches/associated-batches.component';
 
 export const apiBaseUrl : string = environment.baseUrl;
 
@@ -32,6 +33,7 @@ export const apiBaseUrl : string = environment.baseUrl;
     NavigationBarComponent,
     SearchComponent,
     ProductDetailComponent,
+    AssociatedBatchesComponent,
   ],
   imports: [
     BrowserModule,

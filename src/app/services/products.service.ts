@@ -36,7 +36,6 @@ export class ProductsService {
     .pipe(catchError(this.error));
   }
 
-
   error(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

@@ -7,11 +7,15 @@ import { ProductStorage } from 'src/app/services/products.service';
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
-  selected = 'option2';
-  onSale = "Yes";
+  onSale: string;
   @Input() selectedProduct: ProductStorage | any;
+  @Input() allCategories: string[] = [];
 
-  constructor() { }
+  constructor() {
+    console.log("Product Conditions: " + this.selectedProduct == null) ;
+    this.onSale = (this.selectedProduct == null || !this.selectedProduct.onSale) ? "No" : "Yes";
+    // console.log("ProdcutID: " + this.selectedProduct.productID, this.onSale);
+  }
 
   ngOnInit(): void {
   }

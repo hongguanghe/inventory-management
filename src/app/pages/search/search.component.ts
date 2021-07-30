@@ -22,18 +22,27 @@ export class SearchComponent implements OnInit{
     'price', 'quantities', 'onSale', 
     'location', 'cost', 'batches'];
   allProducts: ProductStorage[] = [];
+  allCategories: string[] = [];
   expandedProduct: ProductStorage | any;
   
   constructor(private prodductService: ProductsService) {
   }
   ngOnInit(): void {
     this.getAllProducts();
+    this.getAllCategories();
   }
 
   getAllProducts() {
     console.log("fetching all products");
     this.prodductService.getAllProducts()
       .subscribe(products => this.allProducts = products);
+  }
+
+
+  getAllCategories() {
+    console.log("fetching all categories");
+    this.prodductService.getAllCategories()
+      .subscribe(categories => this.allCategories = categories);
   }
 
   convertDate(date: any) {
