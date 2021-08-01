@@ -25,7 +25,7 @@ export class SearchComponent implements OnInit{
   allCategories: string[] = [];
   expandedProduct: ProductStorage | any;
   
-  constructor(private prodductService: ProductsService) {
+  constructor(private productService: ProductsService) {
   }
   ngOnInit(): void {
     this.getAllProducts();
@@ -34,14 +34,14 @@ export class SearchComponent implements OnInit{
 
   getAllProducts() {
     console.log("fetching all products");
-    this.prodductService.getAllProducts()
+    this.productService.getAllProducts()
       .subscribe(products => this.allProducts = products);
   }
 
 
   getAllCategories() {
     console.log("fetching all categories");
-    this.prodductService.getAllCategories()
+    this.productService.getAllCategories()
       .subscribe(categories => this.allCategories = categories);
   }
 

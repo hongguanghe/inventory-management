@@ -23,6 +23,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { AssociatedBatchesComponent } from './pages/associated-batches/associated-batches.component';
+import { CreateProductsComponent } from './pages/create-products/create-products.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import { BatchDetailComponent } from './pages/batch-detail/batch-detail.component';
+
 
 export const apiBaseUrl : string = environment.baseUrl;
 
@@ -34,6 +38,8 @@ export const apiBaseUrl : string = environment.baseUrl;
     SearchComponent,
     ProductDetailComponent,
     AssociatedBatchesComponent,
+    CreateProductsComponent,
+    BatchDetailComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,7 +59,8 @@ export const apiBaseUrl : string = environment.baseUrl;
     MatTabsModule,
     MatInputModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    MatStepperModule
   ],
   providers: [],
   bootstrap: [AppComponent]

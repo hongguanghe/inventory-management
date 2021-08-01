@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { BatchStorage, ProductsService, ProductStorage } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-associated-batches',
@@ -7,9 +8,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AssociatedBatchesComponent implements OnInit {
 
-  constructor() { }
+  displayedColumns: string[] = [
+    'batchId', 'quantities', 'expirationDate', 
+    'purchasedDate', 'cost', 'manufacturer'];
+
+  @Input() allBatches: BatchStorage[] = [];
+  @Input() associatedProduct: ProductStorage[] = [];
+  expandedBatch: BatchStorage | any;
+
+  constructor(private productService: ProductsService) { }
 
   ngOnInit(): void {
+  }
+
+  deleteBatch(batch: BatchStorage) {
+    this.productService.deleteBatchById(batch.batchId);
+  }
+
+  setExpandedBatch(batch: BatchStorage) {
+    this.expandedBatch = batch;
   }
 
 }

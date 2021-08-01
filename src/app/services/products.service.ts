@@ -36,6 +36,15 @@ export class ProductsService {
     .pipe(catchError(this.error));
   }
 
+  deleteBatchById(id: number): boolean{
+    let API_URL = `${this.baseUrl}/batch/id`;
+    let responseCode = 0;
+    this.http.delete(API_URL, { headers: this.headers, observe: 'response'})
+    .pipe(catchError(this.error))
+    .subscribe(response => responseCode = response.status)
+    return responseCode == 200
+  }
+
   error(error: HttpErrorResponse) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
