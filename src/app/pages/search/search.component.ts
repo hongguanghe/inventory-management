@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as moment from 'moment';
 import { ProductStorage, ProductsService } from 'src/app/services/products.service';
 import { animate, state, style, transition, trigger } from '@angular/animations';
@@ -25,9 +25,10 @@ export class SearchComponent implements OnInit{
     'location', 'cost', 'batches'];
   allProducts: any;
   allCategories: string[] = [];
+  allChips: string[] = ["All"];
   expandedProduct: ProductStorage | any;
-  keyword: string = ''
-  selectedCategory: string | any;
+  keyword: string;
+  selectedCategory: string;
   options: FormGroup;
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto');
@@ -37,6 +38,8 @@ export class SearchComponent implements OnInit{
       hideRequired: this.hideRequiredControl,
       floatLabel: this.floatLabelControl,
     });
+    this.keyword = ''
+    this.selectedCategory = ''
   }
   
   ngOnInit(): void {
@@ -55,7 +58,11 @@ export class SearchComponent implements OnInit{
   getAllCategories() {
     console.log("fetching all categories");
     this.productService.getAllCategories()
-      .subscribe(categories => this.allCategories = categories);
+      .subscribe(categories => {
+        this.allCategories = categories;
+        this.allChips = ["All"];
+        this.allChips = this.allChips.concat(this.allCategories);
+      });
   }
 
   convertDate(date: any) {
@@ -74,7 +81,21 @@ export class SearchComponent implements OnInit{
       });
     }
     else {
-      this.getAllProducts();
+      this.productService.getProductsByCategory(this.selectedCategory)
+      .subscribe(result => this.allProducts = new MatTableDataSource(result));
+      
+    }
+  }
+
+  selectChipChange($event: any, category: string) {
+    if (category != null && this.selectedCategory != category) {
+      if (category.toLowerCase() == "all") {
+        this.selectedCategory = "";
+      }
+      else {
+        this.selectedCategory = category;
+      }
+      this.handleSearch();
     }
   }
 

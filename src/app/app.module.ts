@@ -26,6 +26,7 @@ import { AssociatedBatchesComponent } from './pages/associated-batches/associate
 import { CreateProductsComponent } from './pages/create-products/create-products.component';
 import { MatStepperModule } from '@angular/material/stepper';
 import { BatchDetailComponent } from './pages/batch-detail/batch-detail.component';
+import { MatChipsModule } from '@angular/material/chips';
 
 
 export const apiBaseUrl : string = environment.baseUrl;
@@ -60,7 +61,8 @@ export const apiBaseUrl : string = environment.baseUrl;
     MatInputModule,
     MatButtonModule,
     MatSelectModule,
-    MatStepperModule
+    MatStepperModule,
+    MatChipsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

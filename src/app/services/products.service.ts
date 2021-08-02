@@ -45,17 +45,12 @@ export class ProductsService {
     return responseCode == 200;
   }
 
-  searchProducts(keyword: string, category: string | null): Observable<ProductStorage[]>{
+  searchProducts(keyword: string, category: string): Observable<ProductStorage[]>{
     let API_URL = `${this.baseUrl}/products/product/search`;
-
     keyword = keyword.trim();
-
     let parameters = new HttpParams()
-      .set('keyword', keyword);
-
-    if (category != null) {
-      parameters.set("category", category);
-    }
+      .set('keyword', keyword)
+      .set('category', category);
 
     return this.http.get<ProductStorage[]>(API_URL, { headers: this.headers, params: parameters})
       .pipe(catchError(this.error));
@@ -65,7 +60,7 @@ export class ProductsService {
     let API_URL = `${this.baseUrl}/products/product/category`;
 
     let parameters = new HttpParams()
-      .set('keyword', category);
+      .set('category', category);
 
     return this.http.get<ProductStorage[]>(API_URL, { headers: this.headers, params: parameters })
       .pipe(catchError(this.error)); 
