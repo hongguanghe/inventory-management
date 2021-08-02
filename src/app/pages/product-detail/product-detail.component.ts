@@ -12,8 +12,6 @@ export class ProductDetailComponent implements OnInit {
   @Input() allCategories: string[] = [];
 
   constructor() {
-    console.log("Product Conditions: " + this.selectedProduct == null) ;
-    // console.log("ProdcutID: " + this.selectedProduct.productID, this.onSale);
   }
 
   ngOnInit(): void {
