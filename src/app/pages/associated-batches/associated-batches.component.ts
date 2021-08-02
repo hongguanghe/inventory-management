@@ -13,12 +13,15 @@ export class AssociatedBatchesComponent implements OnInit {
     'purchasedDate', 'cost', 'manufacturer'];
 
   @Input() allBatches: BatchStorage[] = [];
-  @Input() associatedProduct: ProductStorage[] = [];
+  @Input() associatedProduct: ProductStorage | any;
   expandedBatch: BatchStorage | any;
 
   constructor(private productService: ProductsService) { }
 
   ngOnInit(): void {
+    // if (this.allBatches.length > 0) {
+    //   this.associatedProduct = this.allBatches[0].product
+    // }
   }
 
   deleteBatch(batch: BatchStorage) {

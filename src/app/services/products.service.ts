@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -37,13 +37,41 @@ export class ProductsService {
   }
 
   deleteBatchById(id: number): boolean{
-    let API_URL = `${this.baseUrl}/batch/id`;
+    let API_URL = `${this.baseUrl}/batch/${id}`;
     let responseCode = 0;
     this.http.delete(API_URL, { headers: this.headers, observe: 'response'})
     .pipe(catchError(this.error))
     .subscribe(response => responseCode = response.status)
-    return responseCode == 200
+    return responseCode == 200;
   }
+
+  searchProducts(keyword: string, category: string | null): Observable<ProductStorage[]>{
+    let API_URL = `${this.baseUrl}/products/product/search`;
+
+    keyword = keyword.trim();
+
+    let parameters = new HttpParams()
+      .set('keyword', keyword);
+
+    if (category != null) {
+      parameters.set("category", category);
+    }
+
+    return this.http.get<ProductStorage[]>(API_URL, { headers: this.headers, params: parameters})
+      .pipe(catchError(this.error));
+  }
+
+  getProductsByCategory( category: string): Observable<ProductStorage[]> {
+    let API_URL = `${this.baseUrl}/products/product/category`;
+
+    let parameters = new HttpParams()
+      .set('keyword', category);
+
+    return this.http.get<ProductStorage[]>(API_URL, { headers: this.headers, params: parameters })
+      .pipe(catchError(this.error)); 
+  }
+
+  
 
   error(error: HttpErrorResponse) {
     let errorMessage = '';
