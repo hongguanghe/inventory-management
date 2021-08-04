@@ -27,6 +27,7 @@ import { CreateProductsComponent } from './pages/create-products/create-products
 import { MatStepperModule } from '@angular/material/stepper';
 import { BatchDetailComponent } from './pages/batch-detail/batch-detail.component';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatSortModule } from '@angular/material/sort';
 
 
 export const apiBaseUrl : string = environment.baseUrl;
@@ -62,7 +63,8 @@ export const apiBaseUrl : string = environment.baseUrl;
     MatButtonModule,
     MatSelectModule,
     MatStepperModule,
-    MatChipsModule
+    MatChipsModule,
+    MatSortModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,30 +1,26 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import * as moment from 'moment';
 import { ProductStorage, ProductsService } from 'src/app/services/products.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatSort } from '@angular/material/sort';
+import { DataSource } from '@angular/cdk/collections';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
+  styleUrls: ['./search.component.scss']
 }) 
 
-export class SearchComponent implements OnInit{
+export class SearchComponent implements OnInit, AfterViewInit {
+  @ViewChild(MatSort) sort: MatSort | any;
   displayedColumns: string[] = [
     'productId', 'brand', 'category','name', 
     'price', 'quantities', 'onSale', 
     'location', 'cost', 'batches'];
   allProducts: any;
   allCategories: string[] = [];
+  sortedData: ProductStorage | any;
   allChips: string[] = ["All"];
   expandedProduct: ProductStorage | any;
   keyword: string;
@@ -41,6 +37,9 @@ export class SearchComponent implements OnInit{
     this.keyword = ''
     this.selectedCategory = ''
   }
+
+  ngAfterViewInit() {
+  }
   
   ngOnInit(): void {
     this.allProducts = new MatTableDataSource();
@@ -51,7 +50,11 @@ export class SearchComponent implements OnInit{
   getAllProducts() {
     console.log("fetching all products");
     this.productService.getAllProducts()
-      .subscribe(products => this.allProducts = products);
+      .subscribe(products => {
+        this.allProducts = new MatTableDataSource(products);
+        this.allProducts.sort = this.sort;
+      });
+    console.log("all products received");
   }
 
 
@@ -65,9 +68,9 @@ export class SearchComponent implements OnInit{
       });
   }
 
-  convertDate(date: any) {
-    return moment(date).format('YYYY-MM-DD');
-  }
+  // convertDate(date: any) {
+  //   return moment(date).format('YYYY-MM-DD');
+  // }
 
   setExpandedProduct(product: any){
     this.expandedProduct = product;
@@ -100,3 +103,7 @@ export class SearchComponent implements OnInit{
   }
 
 }
+
+// function compare(a: number | string, b: number | string, isAsc: boolean) {
+//   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+// }

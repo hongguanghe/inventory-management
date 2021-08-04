@@ -4,6 +4,10 @@
 @import '~@angular/material/theming';
 @include mat-core();
 
+body {
+  display: flex;
+  justify-content: center;
+}
 
 .example-small-box, .example-large-box .expandable-submit-button{
   display: flex;
@@ -18,4 +22,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+mat-table {
+  min-width:90%;
+}
+
+mat-card {
+  min-width: 1200px;
+  display: flex;
+  justify-content: center;
+}
+
+.mat-card-content {
+  min-width: 1200px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.search-condition {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+}
+
+th.mat-sort-header-sorted {
+  color: black;
 }

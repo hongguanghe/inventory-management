@@ -2,14 +2,14 @@
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Product Name</mat-label>
-        <input matInput type="text" [value]="selectedProduct == null ? 'Product Name' : selectedProduct.name">
+        <input matInput type="text" [value]="productName">
         <mat-icon matSuffix>redeem</mat-icon>
         <mat-hint>e.g. Silver Laptop</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Brand</mat-label>
-        <input matInput type="text" [value]="selectedProduct == null ? 'Brand' : selectedProduct.brand">
+        <input matInput type="text" [value]="productBrand">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         <mat-hint>e.g. BrandA</mat-hint>
     </mat-form-field>
@@ -25,7 +25,7 @@
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Price</mat-label>
-        <input matInput type="number" class="example-right-align" [value]="selectedProduct == null ? '0' : selectedProduct.price">
+        <input matInput type="number" class="example-right-align" [value]="productPrice">
         <mat-icon matSuffix>attach_money</mat-icon>
         <mat-hint>e.g. 8.99</mat-hint>
     </mat-form-field>
@@ -50,7 +50,7 @@
         
 </mat-card-content>
 <mat-card-actions class="expandable-submit-button">
-    <button mat-raised-button color="primary">Save</button>
+    <button mat-raised-button color="primary" (click) = "updateProduct()">Save</button>
     <button mat-raised-button color="primary">Delete</button>
 </mat-card-actions>
 <!-- <router-outlet></router-outlet> -->

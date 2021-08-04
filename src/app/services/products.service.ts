@@ -66,7 +66,18 @@ export class ProductsService {
       .pipe(catchError(this.error)); 
   }
 
-  
+  updateProduct(product: any) {
+    let API_URL = `${this.baseUrl}/products/product/${product.productId}`;
+
+    let parameters = new HttpParams()
+    .set('productDto', product);
+
+    let responseCode = 0;
+    this.http.delete(API_URL, { headers: this.headers, params: parameters, observe: 'response' })
+      .pipe(catchError(this.error))
+      .subscribe(response => responseCode = response.status)
+    return responseCode == 200;
+  }
 
   error(error: HttpErrorResponse) {
     let errorMessage = '';
@@ -103,5 +114,15 @@ export interface BatchStorage {
   expirationDate: Date;
   productId: number;
   product: ProductStorage;
+}
+
+export interface ProductRequest {
+  name: string;
+  productId: number;
+  brand: string;
+  category: string;
+  price: number;
+  onSale: boolean;
+  location: string;
 }
 
