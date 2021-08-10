@@ -4,9 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { ConfirmationDialogModel, ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
+import { ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
 
 @Component({
   selector: 'app-search',
@@ -54,20 +54,12 @@ export class SearchComponent implements OnInit {
     this.getAllCategories();
   }
 
-  // openDialog(product: ProductStorage) {
-  //   this.dialog.open(DialogDataExampleDialog, {product});
-  // }
-
   getAllProducts() {
     this.productService.getAllProducts()
       .subscribe(products => {
         this.allProducts = new MatTableDataSource(products);
         this.allProducts.sort = this.sort;
-        this.allProducts.paginator = this.paginator;
-        if (this.allProducts.paginator) {
-          this.allProducts.paginator.firstPage();
-        }
-
+        this.paginatorSetUp();
       });
   }
 
@@ -96,6 +88,7 @@ export class SearchComponent implements OnInit {
       this.productService.getProductsByCategory(this.selectedCategory)
       .subscribe(result => this.allProducts = new MatTableDataSource(result)); 
     }
+    this.paginatorSetUp();
   }
 
   selectChipChange($event: any, category: string) {
@@ -107,6 +100,13 @@ export class SearchComponent implements OnInit {
         this.selectedCategory = category;
       }
       this.handleSearch();
+    }
+  }
+
+  paginatorSetUp() {
+    this.allProducts.paginator = this.paginator;
+    if (this.allProducts.paginator) {
+      this.allProducts.paginator.firstPage();
     }
   }
 
