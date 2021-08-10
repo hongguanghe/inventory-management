@@ -1,50 +1,60 @@
+<div *ngIf="associatedProduct != null">
+    <table mat-table [dataSource]="allBatches" matSort class="mat-elevation-z8 batch-table">
+        <ng-container matColumnDef="batchId">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Batch ID </th>
+            <td mat-cell *matCellDef="let batch"> {{batch.batchId}} </td>
+        </ng-container>
 
+        <ng-container matColumnDef="quantities">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Quantities </th>
+            <td mat-cell *matCellDef="let batch"> {{batch.quantities}} </td>
+        </ng-container>
 
-<table mat-table [dataSource]="allBatches" multiTemplateDataRows class="mat-elevation-z8">
-    <ng-container matColumnDef="batchId">
-        <th mat-header-cell *matHeaderCellDef> Batch ID </th>
-        <td mat-cell *matCellDef="let batch"> {{batch.batchId}} </td>
-    </ng-container>
+        <ng-container matColumnDef="expirationDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Expiration Date </th>
+            <td mat-cell *matCellDef="let batch"> {{convertDate(batch.expirationDate)}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="quantities">
-        <th mat-header-cell *matHeaderCellDef> Quantities </th>
-        <td mat-cell *matCellDef="let batch"> {{batch.quantities}} </td>
-    </ng-container>
+        <ng-container matColumnDef="purchasedDate">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Purchased Date </th>
+            <td mat-cell *matCellDef="let batch"> {{convertDate(batch.purchasedDate)}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="expirationDate">
-        <th mat-header-cell *matHeaderCellDef> Expiration Date </th>
-        <td mat-cell *matCellDef="let batch"> {{batch.expirationDate}} </td>
-    </ng-container>
+        <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Cost </th>
+            <td mat-cell *matCellDef="let batch"> $ {{batch.cost}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="purchasedDate">
-        <th mat-header-cell *matHeaderCellDef> Purchased Date </th>
-        <td mat-cell *matCellDef="let batch"> {{batch.purchasedDate}} </td>
-    </ng-container>
+        <ng-container matColumnDef="manufacturer">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Manufacturer </th>
+            <td mat-cell *matCellDef="let batch"> {{batch.manufacturer}} </td>
+        </ng-container>
 
-    <ng-container matColumnDef="cost">
-        <th mat-header-cell *matHeaderCellDef> Cost </th>
-        <td mat-cell *matCellDef="let batch"> $ {{batch.cost}} </td>
-    </ng-container>
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> Edit </th>
+            <td mat-cell *matCellDef="let batch">
+                <button mat-icon-button id="edit-icon" (click)="handleEditBatch()" aria-label="Edit a Batch">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Delete </th>
+            <td mat-cell *matCellDef="let batch">
+                <button mat-icon-button id="delete-icon" (click)="handleDeleteBatch(batch.batchId)" aria-label="Delete a Batch">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </td>
+        </ng-container>
 
-    <ng-container matColumnDef="manufacturer">
-        <th mat-header-cell *matHeaderCellDef> Manufacturer </th>
-        <td mat-cell *matCellDef="let batch"> {{batch.manufacturer}} </td>
-    </ng-container>
-
-    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-    <ng-container matColumnDef="expandedDetail">
-        <td mat-cell *matCellDef="let batch" [attr.colspan]="displayedColumns.length">
-            <div class="element-detail" [@detailExpand]="batch == expandedBatch ? 'expanded' : 'collapsed'">
-                <p>Placeholder + Buttons</p>
-            </div>
-        </td>
-    </ng-container>
-
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let batch; columns: displayedColumns;" class="element-row"
-        [class.expanded-row]="expandedBatch === batch" (click)="setExpandedBatch(batch)">
-    </tr>
-    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="detail-row"></tr>
-</table>
-
+        <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="10">No batches under this product</td>
+        </tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+    </mat-paginator>
+</div>
 <router-outlet></router-outlet>

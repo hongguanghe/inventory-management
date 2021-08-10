@@ -1,26 +1,36 @@
-import { AfterViewInit, Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import * as moment from 'moment';
+import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ProductStorage, ProductsService } from 'src/app/services/products.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
-import { DataSource } from '@angular/cdk/collections';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { ConfirmationDialogModel, ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
 }) 
 
-export class SearchComponent implements OnInit, AfterViewInit {
+export class SearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort | any;
+  @ViewChild(MatPaginator) paginator: MatPaginator | any;
   displayedColumns: string[] = [
     'productId', 'brand', 'category','name', 
-    'price', 'quantities', 'onSale', 
-    'location', 'cost', 'batches'];
+    'price', 'quantities', 'onSale', 'location', 
+    'cost', 'batches', 'edit', 'add-batch',
+    'delete'];
   allProducts: any;
   allCategories: string[] = [];
-  sortedData: ProductStorage | any;
   allChips: string[] = ["All"];
   expandedProduct: ProductStorage | any;
   keyword: string;
@@ -29,16 +39,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto');
   
-  constructor(private productService: ProductsService, private fb: FormBuilder) {
+  constructor(private productService: ProductsService, private fb: FormBuilder, public dialog: MatDialog) {
     this.options = fb.group({
       hideRequired: this.hideRequiredControl,
       floatLabel: this.floatLabelControl,
     });
     this.keyword = ''
     this.selectedCategory = ''
-  }
-
-  ngAfterViewInit() {
   }
   
   ngOnInit(): void {
@@ -47,19 +54,24 @@ export class SearchComponent implements OnInit, AfterViewInit {
     this.getAllCategories();
   }
 
+  // openDialog(product: ProductStorage) {
+  //   this.dialog.open(DialogDataExampleDialog, {product});
+  // }
+
   getAllProducts() {
-    console.log("fetching all products");
     this.productService.getAllProducts()
       .subscribe(products => {
         this.allProducts = new MatTableDataSource(products);
         this.allProducts.sort = this.sort;
+        this.allProducts.paginator = this.paginator;
+        if (this.allProducts.paginator) {
+          this.allProducts.paginator.firstPage();
+        }
+
       });
-    console.log("all products received");
   }
 
-
   getAllCategories() {
-    console.log("fetching all categories");
     this.productService.getAllCategories()
       .subscribe(categories => {
         this.allCategories = categories;
@@ -68,9 +80,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
       });
   }
 
-  // convertDate(date: any) {
-  //   return moment(date).format('YYYY-MM-DD');
-  // }
 
   setExpandedProduct(product: any){
     this.expandedProduct = product;
@@ -78,15 +87,14 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
   handleSearch() {
     if (this.keyword.trim().length != 0) {
-      this.productService.searchProducts(this.keyword, this.selectedCategory)
+      this.productService.searchProducts(this.keyword.toLocaleLowerCase(), this.selectedCategory)
       .subscribe(result => {
         this.allProducts = new MatTableDataSource(result);
       });
     }
     else {
       this.productService.getProductsByCategory(this.selectedCategory)
-      .subscribe(result => this.allProducts = new MatTableDataSource(result));
-      
+      .subscribe(result => this.allProducts = new MatTableDataSource(result)); 
     }
   }
 
@@ -102,8 +110,30 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
   }
 
+  handleDelete(productId: number) {
+    const dialogRef = this.dialog.open(ConfirmationPopUpComponent, {
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure to delete this product and its associated batches?'
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.productService.deleteProduct(productId);
+      }
+    });
+  }
+
+  handleEdit(product: ProductStorage) {
+
+  }
+
+  handleAddBatch() {
+
+  }
+
 }
 
-// function compare(a: number | string, b: number | string, isAsc: boolean) {
-//   return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-// }
+
+

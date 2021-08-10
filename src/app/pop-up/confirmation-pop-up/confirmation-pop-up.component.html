@@ -1,0 +1,11 @@
+<h4 mat-dialog-title>{{ title }}</h4>
+
+
+<mat-dialog-content class="mat-typography">
+    {{ message }}
+</mat-dialog-content>
+
+<mat-dialog-actions >
+    <button mat-raised-button mat-dialog-close>No</button>
+    <button mat-raised-button color="warn" [mat-dialog-close]="true">Yes</button>
+</mat-dialog-actions>

@@ -56,3 +56,33 @@ mat-card {
 th.mat-sort-header-sorted {
   color: black;
 }
+
+.element-detail {
+  display: flex;
+  justify-content: center;
+}
+
+.batch-table {
+  min-width: 1200px;
+}
+
+#delete-icon{
+  color: #C62828;
+}
+
+#edit-icon{
+  color: #ffbb3d;
+}
+
+#add-icon{
+  color: #a3c1ad;
+}
+
+.red-snackbar {
+    background: #F44336;
+    color: #F3F3F3;
+}
+
+.default-snackbar {
+    color: #F3F3F3;
+}

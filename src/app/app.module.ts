@@ -28,7 +28,11 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { BatchDetailComponent } from './pages/batch-detail/batch-detail.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSortModule } from '@angular/material/sort';
-
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationPopUpComponent } from './pop-up/confirmation-pop-up/confirmation-pop-up.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { EditProductComponent } from './pop-up/edit-product/edit-product.component';
 
 export const apiBaseUrl : string = environment.baseUrl;
 
@@ -42,6 +46,8 @@ export const apiBaseUrl : string = environment.baseUrl;
     AssociatedBatchesComponent,
     CreateProductsComponent,
     BatchDetailComponent,
+    ConfirmationPopUpComponent,
+    EditProductComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,7 +70,10 @@ export const apiBaseUrl : string = environment.baseUrl;
     MatSelectModule,
     MatStepperModule,
     MatChipsModule,
-    MatSortModule
+    MatSortModule,
+    MatPaginatorModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,5 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
@@ -13,7 +15,7 @@ export class ProductsService {
   baseUrl: string = environment.baseUrl;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private snackbar: MatSnackBar) {
   }
 
   getAllCategories(): Observable<string[]> {
@@ -63,7 +65,7 @@ export class ProductsService {
       .set('category', category);
 
     return this.http.get<ProductStorage[]>(API_URL, { headers: this.headers, params: parameters })
-      .pipe(catchError(this.error)); 
+      .pipe(catchError(this.error))
   }
 
   updateProduct(product: any) {
@@ -73,10 +75,29 @@ export class ProductsService {
     .set('productDto', product);
 
     let responseCode = 0;
+    this.http.patch(API_URL, { headers: this.headers, params: parameters, observe: 'response' })
+      .pipe(catchError(this.error))
+      .subscribe(() => this.openSnackBar("Product Updated", "Dismiss", "default-snackbar"));
+    }
+  
+  deleteProduct(id: number) {
+    let API_URL = `${this.baseUrl}/products/product/${id}`;
+
+    let parameters = new HttpParams()
+      .set('id', id);
+
     this.http.delete(API_URL, { headers: this.headers, params: parameters, observe: 'response' })
       .pipe(catchError(this.error))
-      .subscribe(response => responseCode = response.status)
-    return responseCode == 200;
+      .subscribe(() => this.openSnackBar("Product and its batches Deleted", "Dismiss", "default-snackbar"));
+  }
+
+
+  openSnackBar(message: string, action: string, style: string) {
+    debugger;
+    this.snackbar.open(message, action, {
+      duration: 3000,
+      panelClass: [style]
+    });
   }
 
   error(error: HttpErrorResponse) {
@@ -84,11 +105,13 @@ export class ProductsService {
     if (error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
     } else {
-      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+      errorMessage = `Error Code: ${error.status} + ', ' + ${error.message}`;
     }
-    console.log(errorMessage);
+    debugger;
+    this.openSnackBar(errorMessage, "Dismiss", "red-snackbar");
     return throwError(errorMessage);
   }
+
 
 }
 
