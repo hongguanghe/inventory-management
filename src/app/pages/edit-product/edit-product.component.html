@@ -1,0 +1,64 @@
+
+<form [formGroup]="productForm" #formDir="ngForm" class="pop-up-form">
+    <div class="form-group">
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-name edit-input">
+            <mat-label>Product Name</mat-label>
+            <input matInput type="text" class="form-control" formControlName="name" required>
+            <mat-icon matSuffix>redeem</mat-icon>
+            <mat-hint>e.g. Silver Laptop</mat-hint>
+            <!-- <div class="invalid-feedback">
+                        <strong *ngIf="productName.errors?.required">Product Name is required</strong>
+                    </div> -->
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-brand edit-input">
+            <mat-label>Brand</mat-label>
+            <input matInput type="text" class="form-control" formControlName="brand" required>
+            <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+            <mat-hint>e.g. BrandA</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-category edit-input">
+            <mat-label>Category</mat-label>
+            <mat-hint>e.g. Fashion</mat-hint>
+            <mat-icon matSuffix>category</mat-icon>
+            <mat-select class="form-control" formControlName="category" required>
+                <mat-option *ngFor="let currentCategory of allCategories" [value]="currentCategory">{{ currentCategory }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-price edit-input">
+            <mat-label>Price</mat-label>
+            <input matInput type="number" class="form-control" formControlName="price" required>
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-hint>e.g. 8.99</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-location edit-input">
+            <mat-label>Location</mat-label>
+            <input matInput type="text" class="form-control" formControlName="location" required>
+            <mat-icon matSuffix>place</mat-icon>
+            <mat-hint>e.g. A8</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group input-field-onSale edit-input">
+            <mat-label>On Sale</mat-label>
+            <mat-hint>e.g. Yes or No</mat-hint>
+            <mat-icon matSuffix>local_offer</mat-icon>
+            <mat-select class="form-control" formControlName="onSale" required>
+                <mat-option value="No">No</mat-option>
+                <mat-option value="Yes">Yes</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</form>
+
+
+<div *ngIf="!emptyProduct" mat-dialog-actions class="pop-up-buttons">
+    <button mat-raised-button color="primary" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="productForm.invalid || productForm.pristine" (click)="updateProduct()">Save</button>
+</div>
+
+
+
+<router-outlet></router-outlet>

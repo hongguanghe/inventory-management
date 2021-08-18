@@ -1,0 +1,51 @@
+<form [formGroup]="batchForm" #formDir="ngForm" class="pop-up-form">
+    <div class="form-group">
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group edit-input">
+            <mat-label>Quantities</mat-label>
+            <input matInput type="number" class="form-control" formControlName="quantities" required>
+            <mat-icon matSuffix>production_quantity_limits</mat-icon>
+            <mat-hint>e.g. 80</mat-hint>
+            <!-- <div class="invalid-feedback">
+                <strong *ngIf="productName.errors?.required">Product Name is required</strong>
+            </div> -->
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group edit-input">
+            <mat-label>Cost</mat-label>
+            <input matInput type="number" class="form-control" formControlName="cost" required>
+            <mat-icon matSuffix>attach_money</mat-icon>
+            <mat-hint>e.g. 8.99</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group edit-input">
+            <mat-label>Manufacturer</mat-label>
+            <input matInput type="text" class="form-control" formControlName="manufacturer" required>
+            <mat-icon matSuffix>precision_manufacturing</mat-icon>
+            <mat-hint>e.g. Best Food Production</mat-hint>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group edit-input">
+            <mat-label>Expiration Date</mat-label>
+            <input matInput [matDatepicker]="expirationDatePicker" class="form-control" formControlName="expirationDate"
+                required>
+            <mat-datepicker-toggle matSuffix [for]="expirationDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #expirationDatePicker></mat-datepicker>
+            <mat-hint>e.g. MM/DD/YYYY</mat-hint>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline" floatLabel="always" class="form-group edit-input">
+            <mat-label>Purchased Date</mat-label>
+            <input matInput [matDatepicker]="purchasedDatePicker" class="form-control" formControlName="purchasedDate" required>
+            <mat-datepicker-toggle matSuffix [for]="purchasedDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #purchasedDatePicker></mat-datepicker>
+            <mat-hint>e.g. MM/DD/YYYY</mat-hint>
+        </mat-form-field>
+    </div>
+</form>
+
+
+<div *ngIf="editingMode" mat-dialog-actions class="pop-up-buttons">
+    <button mat-raised-button color="primary" mat-dialog-close>Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="batchForm.invalid || batchForm.pristine"
+        (click)="updateBatch()">Save</button>
+</div>

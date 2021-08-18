@@ -1,0 +1,47 @@
+
+<h1 mat-dialog-title>Create Product</h1>
+
+<div mat-dialog-content>
+    <mat-stepper orientation="horizontal">
+        <mat-step>
+                <ng-template matStepLabel>Step 1: Product Information</ng-template>
+                <ng-template matStepContent>
+                    <div class="create-product-info">
+                        <app-edit-product [selectedProduct] = "newProduct"></app-edit-product>
+                    </div>
+                    <div class="stepper-action-single">
+                        <button mat-raised-button color="primary" class="stepper-button" matStepperNext>Next</button>
+                    </div>
+
+                </ng-template>
+        </mat-step>
+        <mat-step>
+                <ng-template matStepLabel>Step 2: Batches</ng-template>
+                <ng-template matStepContent>
+                    <div class="create-batch-info">
+                        <div *ngFor = "let batch of newProduct.batches; let indexOfelement=index;">
+                            <div class="batch-row">
+                                <app-edit-batch [selectedBatch]="batch" [editingMode]=false></app-edit-batch>
+                                <div class="delete-icon-space">
+                                    <button *ngIf="newProduct.batches.length > 1" mat-icon-button id="delete-icon" (click)="deleteBatch(indexOfelement)" aria-label="Delete a Product"
+                                        class="delete-batch-icon">
+                                        <mat-icon>delete</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="stepper-action">
+                        <div class="action-buttons-group">
+                            <button mat-raised-button color="primary" class="stepper-button-left" matStepperPrevious>Back</button>
+                            <button mat-raised-button color="primary" class="stepper-button" (click)="newBatch()">Add batch</button>
+                            <button mat-raised-button color="primary" class="stepper-button-right" [disabled]="formValidation()" (click)="submitProduct()">Submit</button>
+                        </div>
+
+                    </div>
+
+                </ng-template>
+        </mat-step>
+    </mat-stepper>
+</div>

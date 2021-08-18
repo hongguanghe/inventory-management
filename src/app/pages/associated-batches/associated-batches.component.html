@@ -33,7 +33,7 @@
         <ng-container matColumnDef="edit">
             <th mat-header-cell *matHeaderCellDef> Edit </th>
             <td mat-cell *matCellDef="let batch">
-                <button mat-icon-button id="edit-icon" (click)="handleEditBatch()" aria-label="Edit a Batch">
+                <button mat-icon-button id="edit-icon" (click)="handleEditBatch(batch)" aria-label="Edit a Batch">
                     <mat-icon>edit</mat-icon>
                 </button>
             </td>

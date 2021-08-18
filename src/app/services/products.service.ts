@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams, HttpResponse } from '@angular/common/http';
 import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,25 +11,31 @@ import { environment } from 'src/environments/environment';
 })
 
 export class ProductsService {
+  updateBatch(selectedBatch: any) {
+    throw new Error('Method not implemented.');
+  }
 
+  allCategories: string[] | any | undefined
   baseUrl: string = environment.baseUrl;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
   constructor(private http: HttpClient, private snackbar: MatSnackBar) {
+    
   }
 
-  getAllCategories(): Observable<string[]> {
+  async fetchCategories(){
     let API_URL = `${this.baseUrl}/categories`;
     return this.http.get<string[]>(API_URL, { headers: this.headers })
       .pipe(catchError(this.error));
   }
 
-  createProduct(data: any): Observable<any> {
-    let API_URL = `${this.baseUrl}/product/create`;
-    return this.http.post(API_URL, data)
-    .pipe(
-      catchError(this.error)
-    ); 
+  createProduct(product: NewProductStorage){
+    let API_URL = `${this.baseUrl}/products/product/create`;
+
+    return this.http.post<NewProductStorage>(API_URL, product, {observe: 'response'})
+      .pipe(catchError(this.error))
+      .subscribe(() => this.openSnackBar("Product Created", "Dismiss", "default-snackbar"))
+
   }
 
   getAllProducts(): Observable<ProductStorage[]> {
@@ -38,13 +44,14 @@ export class ProductsService {
     .pipe(catchError(this.error));
   }
 
-  deleteBatchById(id: number): boolean{
-    let API_URL = `${this.baseUrl}/batch/${id}`;
-    let responseCode = 0;
-    this.http.delete(API_URL, { headers: this.headers, observe: 'response'})
-    .pipe(catchError(this.error))
-    .subscribe(response => responseCode = response.status)
-    return responseCode == 200;
+  deleteBatchById(id: number){
+    let API_URL = `${this.baseUrl}/batches/batch/${id}`;
+    let parameters = new HttpParams()
+      .set('id', id)
+
+    this.http.delete(API_URL, { headers: this.headers, params: parameters, observe: 'response'})
+      .pipe(catchError(this.error))
+      .subscribe(() => this.openSnackBar("Batch Deleted", "Dismiss", "default-snackbar"))
   }
 
   searchProducts(keyword: string, category: string): Observable<ProductStorage[]>{
@@ -70,12 +77,14 @@ export class ProductsService {
 
   updateProduct(product: any) {
     let API_URL = `${this.baseUrl}/products/product/${product.productId}`;
+    debugger;
+    // let parameters = new HttpParams()
+    // .set('productDto', JSON.stringify(product));
 
-    let parameters = new HttpParams()
-    .set('productDto', product);
+    let formData = new FormData();
+    formData.append('productDto', JSON.stringify(product))
 
-    let responseCode = 0;
-    this.http.patch(API_URL, { headers: this.headers, params: parameters, observe: 'response' })
+    this.http.patch(API_URL, formData, { headers: this.headers})
       .pipe(catchError(this.error))
       .subscribe(() => this.openSnackBar("Product Updated", "Dismiss", "default-snackbar"));
     }
@@ -93,11 +102,18 @@ export class ProductsService {
 
 
   openSnackBar(message: string, action: string, style: string) {
-    debugger;
     this.snackbar.open(message, action, {
       duration: 3000,
       panelClass: [style]
     });
+  }
+
+  booleanConversion(val: boolean): string {
+    return val ? 'Yes' : 'No'
+  }
+
+  stringConversion(val: string): boolean {
+    return val == 'Yes' ? true : false;
   }
 
   error(error: HttpErrorResponse) {
@@ -111,8 +127,6 @@ export class ProductsService {
     this.openSnackBar(errorMessage, "Dismiss", "red-snackbar");
     return throwError(errorMessage);
   }
-
-
 }
 
 export interface ProductStorage {
@@ -139,13 +153,30 @@ export interface BatchStorage {
   product: ProductStorage;
 }
 
-export interface ProductRequest {
+export class ProductRequest {
+  name!: string;
+  productId!: number;
+  brand!: string;
+  category!: string;
+  price!: number;
+  onSale!: boolean;
+  location!: string;
+}
+
+export interface NewProductStorage {
   name: string;
-  productId: number;
   brand: string;
   category: string;
   price: number;
   onSale: boolean;
   location: string;
+  batches: NewBatchStorage[];
 }
 
+export interface NewBatchStorage {
+  quantities: number;
+  cost: number;
+  manufacturer: string;
+  purchasedDate: Date;
+  expirationDate: Date;
+}

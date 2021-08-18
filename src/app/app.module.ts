@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavigationBarComponent } from './nav/navigation-bar/navigation-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -23,16 +22,20 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { AssociatedBatchesComponent } from './pages/associated-batches/associated-batches.component';
-import { CreateProductsComponent } from './pages/create-products/create-products.component';
+import { CreateProductsComponent } from './pop-up/create-products/create-products.component';
 import { MatStepperModule } from '@angular/material/stepper';
-import { BatchDetailComponent } from './pages/batch-detail/batch-detail.component';
+import { EditBatchComponent } from './pages/edit-batch/edit-batch.component';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ConfirmationPopUpComponent } from './pop-up/confirmation-pop-up/confirmation-pop-up.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { EditProductComponent } from './pop-up/edit-product/edit-product.component';
+import { EditProductComponent } from './pages/edit-product/edit-product.component';
+import { EditProductPopUpComponent } from './pop-up/edit-product-pop-up/edit-product-pop-up.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { EditBatchPopUpComponent } from './pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
 
 export const apiBaseUrl : string = environment.baseUrl;
 
@@ -40,14 +43,15 @@ export const apiBaseUrl : string = environment.baseUrl;
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationBarComponent,
     SearchComponent,
     ProductDetailComponent,
     AssociatedBatchesComponent,
     CreateProductsComponent,
-    BatchDetailComponent,
+    EditBatchComponent,
     ConfirmationPopUpComponent,
     EditProductComponent,
+    EditProductPopUpComponent,
+    EditBatchPopUpComponent,
   ],
   imports: [
     BrowserModule,
@@ -73,7 +77,9 @@ export const apiBaseUrl : string = environment.baseUrl;
     MatSortModule,
     MatPaginatorModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

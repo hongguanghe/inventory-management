@@ -7,6 +7,9 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
+import { EditProductPopUpComponent } from 'src/app/pop-up/edit-product-pop-up/edit-product-pop-up.component';
+import { CreateProductsComponent } from '../../pop-up/create-products/create-products.component';
+import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
 
 @Component({
   selector: 'app-search',
@@ -39,7 +42,9 @@ export class SearchComponent implements OnInit {
   hideRequiredControl = new FormControl(false);
   floatLabelControl = new FormControl('auto');
   
-  constructor(private productService: ProductsService, private fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private productService: ProductsService, private fb: FormBuilder, 
+    public confirmationDialog: MatDialog, public editProductDialog: MatDialog,
+    public createProductDialog: MatDialog, public addBatchDialog: MatDialog) {
     this.options = fb.group({
       hideRequired: this.hideRequiredControl,
       floatLabel: this.floatLabelControl,
@@ -48,7 +53,7 @@ export class SearchComponent implements OnInit {
     this.selectedCategory = ''
   }
   
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.allProducts = new MatTableDataSource();
     this.getAllProducts();
     this.getAllCategories();
@@ -63,15 +68,14 @@ export class SearchComponent implements OnInit {
       });
   }
 
-  getAllCategories() {
-    this.productService.getAllCategories()
-      .subscribe(categories => {
+  async getAllCategories() {
+    (await this.productService.fetchCategories())
+      .subscribe((categories: string[]) => {
         this.allCategories = categories;
         this.allChips = ["All"];
         this.allChips = this.allChips.concat(this.allCategories);
       });
   }
-
 
   setExpandedProduct(product: any){
     this.expandedProduct = product;
@@ -89,6 +93,7 @@ export class SearchComponent implements OnInit {
       .subscribe(result => this.allProducts = new MatTableDataSource(result)); 
     }
     this.paginatorSetUp();
+    this.allProducts.sort = this.sort;
   }
 
   selectChipChange($event: any, category: string) {
@@ -111,7 +116,7 @@ export class SearchComponent implements OnInit {
   }
 
   handleDelete(productId: number) {
-    const dialogRef = this.dialog.open(ConfirmationPopUpComponent, {
+    const dialogRef = this.confirmationDialog.open(ConfirmationPopUpComponent, {
       data: {
         title: 'Confirmation',
         message: 'Are you sure to delete this product and its associated batches?'
@@ -126,11 +131,44 @@ export class SearchComponent implements OnInit {
   }
 
   handleEdit(product: ProductStorage) {
+    console.log(product.name)
+    const dialogRef = this.editProductDialog.open(EditProductPopUpComponent, {
+      data: {
+        product: product,
+        allCategories: this.allCategories
+      },
+      panelClass: 'edit-product-dialog'
+    })
 
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        // TODO: update 
+      }
+    });
   }
 
   handleAddBatch() {
+    const dialogRef = this.addBatchDialog.open(EditBatchPopUpComponent, {
+      data: {
+        batch: null,
+        title: 'Create Batch'
+      }
+    });
 
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        // TODO: update 
+      }
+    });
+  }
+
+  handleAddProduct() {
+    const dialogRef = this.editProductDialog.open(CreateProductsComponent, {
+      data: {
+        allCategories: this.allCategories
+      },
+      panelClass: 'create-product-dialog'
+    });
   }
 
 }

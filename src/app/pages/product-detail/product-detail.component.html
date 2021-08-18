@@ -2,14 +2,14 @@
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Product Name</mat-label>
-        <input matInput type="text" [value]="productName">
+        <input matInput type="text">
         <mat-icon matSuffix>redeem</mat-icon>
         <mat-hint>e.g. Silver Laptop</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Brand</mat-label>
-        <input matInput type="text" [value]="productBrand">
+        <input matInput type="text">
         <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
         <mat-hint>e.g. BrandA</mat-hint>
     </mat-form-field>
@@ -18,21 +18,21 @@
         <mat-label>Category</mat-label>
         <mat-hint>e.g. Fashion</mat-hint>
         <mat-icon matSuffix>category</mat-icon>
-        <mat-select [(value)]="selectedProduct == null ? 'allCategories[0]' : selectedProduct.category">
-            <mat-option *ngFor="let category of allCategories" [value]="category">{{ category }}</mat-option>
+        <mat-select>
+            <mat-option *ngFor="let category of allCategories">{{ category }}</mat-option>
         </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Price</mat-label>
-        <input matInput type="number" class="example-right-align" [value]="productPrice">
+        <input matInput type="number" class="example-right-align">
         <mat-icon matSuffix>attach_money</mat-icon>
         <mat-hint>e.g. 8.99</mat-hint>
     </mat-form-field>
 
     <mat-form-field appearance="outline" floatLabel="always">
         <mat-label>Location</mat-label>
-        <input matInput type="text" [value]="selectedProduct == null ? 'Location' : selectedProduct.location">
+        <input matInput type="text">
         <mat-icon matSuffix>place</mat-icon>
         <mat-hint>e.g. A8</mat-hint>
     </mat-form-field>
@@ -41,13 +41,11 @@
         <mat-label>On Sale</mat-label>
         <mat-hint>e.g. Yes or No</mat-hint>
         <mat-icon matSuffix>local_offer</mat-icon>
-        <mat-select [(value)]="productOnSale">
+        <mat-select>
             <mat-option value="No">No</mat-option>
             <mat-option value="Yes">Yes</mat-option>
         </mat-select>
     </mat-form-field>
-
-        
 </mat-card-content>
 <mat-card-actions class="expandable-submit-button">
     <button mat-raised-button color="primary" (click) = "updateProduct()">Save</button>

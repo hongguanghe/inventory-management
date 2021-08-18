@@ -4,6 +4,10 @@ import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
+import { ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
+import { MatDialog } from '@angular/material/dialog';
+import { EditBatchComponent } from '../edit-batch/edit-batch.component';
+import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
 
 
 @Component({
@@ -24,7 +28,8 @@ export class AssociatedBatchesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   expandedBatch: BatchStorage | any;
 
-  constructor(private productService: ProductsService) { 
+  constructor(private productService: ProductsService, public confirmationDialog: MatDialog,
+    public batchDialog: MatDialog) {
     this.allBatches = [];
   }
 
@@ -39,10 +44,6 @@ export class AssociatedBatchesComponent implements OnInit {
     this.allBatches.paginator = this.paginator;
   }
 
-  deleteBatch(batch: BatchStorage) {
-    this.productService.deleteBatchById(batch.batchId);
-  }
-
   setExpandedBatch(batch: BatchStorage) {
     this.expandedBatch = batch;
   }
@@ -52,11 +53,27 @@ export class AssociatedBatchesComponent implements OnInit {
   }
 
   handleDeleteBatch(id: number) {
-    
+    const dialogRef = this.confirmationDialog.open(ConfirmationPopUpComponent, {
+      data: {
+        title: 'Confirmation',
+        message: 'Are you sure to delete this batch?'
+      }
+    })
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.productService.deleteBatchById(id);
+      }
+    });
   }
 
-  handleEditBatch() {
-
+  handleEditBatch(batch: BatchStorage) {
+    const dialogRef = this.batchDialog.open(EditBatchPopUpComponent, {
+      data: {
+        batch: batch,
+        title: 'Edit Batch'
+      }
+    });
   }
 
 }
