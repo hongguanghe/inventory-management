@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditBatchComponent } from 'src/app/pages/edit-batch/edit-batch.component';
 import { EditProductComponent } from 'src/app/pages/edit-product/edit-product.component';
@@ -45,8 +45,8 @@ export class CreateProductsComponent implements OnInit {
         quantities: 0,
         cost: 0,
         manufacturer: "",
-        purchasedDate: new Date(),
-        expirationDate: new Date()
+        purchasedDate: undefined,
+        expirationDate: undefined,
       }
     )
   }
@@ -61,9 +61,11 @@ export class CreateProductsComponent implements OnInit {
   }
 
   submitProduct() {
-    this.createBatches.getSelectedBatch();
+    for (let i = 0; i < this.newProduct.batches.length; i++) {
+      this.createBatches.getSelectedBatch();
+    }
     let product = this.createProduct.getSelectedProduct();
-
+    debugger
     this.productService.createProduct(product);
   }
 

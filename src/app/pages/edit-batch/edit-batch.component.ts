@@ -17,7 +17,6 @@ export class EditBatchComponent implements OnInit {
   emptyBatch: boolean = true
 
   constructor(private productsService: ProductsService) {
-
   }
 
   ngOnInit(): void {
@@ -43,37 +42,56 @@ export class EditBatchComponent implements OnInit {
   }
 
   updateBatch() {
+    debugger
     this.getSelectedBatch();
-    if (this.changed) {
+    // if (this.changed) {
+    //   if(this.editingMode) {
+    //     this.productsService.updateBatch(this.selectedBatch);
+    //   }
+    //   else {
+    //     this.productsService.createBatch(this.selectedBatch);
+    //   }
+    // }
+
+    if (this.editingMode && this.modeChecking()) {
       this.productsService.updateBatch(this.selectedBatch);
+    }
+    else {
+      this.productsService.createBatch(this.selectedBatch);
     }
   }
 
   getSelectedBatch() {
-    if (this.selectedBatch.quantities != this.batchForm.get('quantities').value) {
-      this.selectedBatch.quantities = this.batchForm.get('quantities').value;
-      this.changed = true;
-    }
+    // if (this.selectedBatch.quantities != this.batchForm.get('quantities').value) {
+    //   this.selectedBatch.quantities = this.batchForm.get('quantities').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedBatch.manufacturer != this.batchForm.get('manufacturer').value) {
-      this.selectedBatch.manufacturer = this.batchForm.get('manufacturer').value;
-      this.changed = true;
-    }
+    // if (this.selectedBatch.manufacturer != this.batchForm.get('manufacturer').value) {
+    //   this.selectedBatch.manufacturer = this.batchForm.get('manufacturer').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedBatch.cost != this.batchForm.get('cost').value) {
-      this.selectedBatch.cost = this.batchForm.get('cost').value;
-      this.changed = true;
-    }
+    // if (this.selectedBatch.cost != this.batchForm.get('cost').value) {
+    //   this.selectedBatch.cost = this.batchForm.get('cost').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedBatch.expirationDate != this.batchForm.get('expirationDate').value) {
-      this.selectedBatch.expirationDate = this.batchForm.get('expirationDate').value;
-      this.changed = true;
-    }
+    // if (this.selectedBatch.expirationDate != this.batchForm.get('expirationDate').value) {
+    //   this.selectedBatch.expirationDate = this.batchForm.get('expirationDate').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedBatch.purchasedDate != this.batchForm.get('purchasedDate').value) {
-      this.selectedBatch.purchasedDate = this.batchForm.get('purchasedDate').value;
-      this.changed = true;
-    }
+    // if (this.selectedBatch.purchasedDate != this.batchForm.get('purchasedDate').value) {
+    //   this.selectedBatch.purchasedDate = this.batchForm.get('purchasedDate').value;
+    //   this.changed = true;
+    // }
+
+    this.selectedBatch.quantities = this.batchForm.get('quantities').value;
+    this.selectedBatch.manufacturer = this.batchForm.get('manufacturer').value;
+    this.selectedBatch.cost = this.batchForm.get('cost').value;
+    this.selectedBatch.expirationDate = this.batchForm.get('expirationDate').value;
+    this.selectedBatch.purchasedDate = this.batchForm.get('purchasedDate').value;
 
     return this.selectedBatch;
   }

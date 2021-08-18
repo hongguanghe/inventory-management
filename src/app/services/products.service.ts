@@ -11,9 +11,6 @@ import { environment } from 'src/environments/environment';
 })
 
 export class ProductsService {
-  updateBatch(selectedBatch: any) {
-    throw new Error('Method not implemented.');
-  }
 
   allCategories: string[] | any | undefined
   baseUrl: string = environment.baseUrl;
@@ -23,6 +20,24 @@ export class ProductsService {
     
   }
 
+  updateBatch(selectedBatch: any) {
+    let API_URL = `${this.baseUrl}/batches/batch/${selectedBatch.batchId}`;
+    let parameters = new HttpParams()
+
+    this.http.put(API_URL, selectedBatch, { headers: this.headers, params: parameters, observe: 'response' })
+      .pipe(catchError(this.error))
+      .subscribe(() => this.openSnackBar("Batch Updated", "Dismiss", "default-snackbar"))
+  }
+
+  createBatch(selectedBatch: any) {
+    let API_URL = `${this.baseUrl}/batches/batch/create`;
+    let parameters = new HttpParams();
+    
+    this.http.post(API_URL, selectedBatch, { headers: this.headers, params: parameters, observe: 'response' })
+      .pipe(catchError(this.error))
+      .subscribe(() => this.openSnackBar("Batch Created", "Dismiss", "default-snackbar"))
+  }
+
   async fetchCategories(){
     let API_URL = `${this.baseUrl}/categories`;
     return this.http.get<string[]>(API_URL, { headers: this.headers })
@@ -30,12 +45,12 @@ export class ProductsService {
   }
 
   createProduct(product: NewProductStorage){
+    debugger;
     let API_URL = `${this.baseUrl}/products/product/create`;
 
-    return this.http.post<NewProductStorage>(API_URL, product, {observe: 'response'})
+    return this.http.post(API_URL, product, {observe: 'response'})
       .pipe(catchError(this.error))
       .subscribe(() => this.openSnackBar("Product Created", "Dismiss", "default-snackbar"))
-
   }
 
   getAllProducts(): Observable<ProductStorage[]> {
@@ -77,14 +92,8 @@ export class ProductsService {
 
   updateProduct(product: any) {
     let API_URL = `${this.baseUrl}/products/product/${product.productId}`;
-    debugger;
-    // let parameters = new HttpParams()
-    // .set('productDto', JSON.stringify(product));
 
-    let formData = new FormData();
-    formData.append('productDto', JSON.stringify(product))
-
-    this.http.patch(API_URL, formData, { headers: this.headers})
+    this.http.put(API_URL, product, { headers: this.headers})
       .pipe(catchError(this.error))
       .subscribe(() => this.openSnackBar("Product Updated", "Dismiss", "default-snackbar"));
     }
@@ -123,8 +132,12 @@ export class ProductsService {
     } else {
       errorMessage = `Error Code: ${error.status} + ', ' + ${error.message}`;
     }
-    debugger;
-    this.openSnackBar(errorMessage, "Dismiss", "red-snackbar");
+
+    this.snackbar.open(errorMessage, "Dismiss", {
+      duration: 3000,
+      panelClass: ["red-snackbar"]
+    });
+
     return throwError(errorMessage);
   }
 }
@@ -153,14 +166,23 @@ export interface BatchStorage {
   product: ProductStorage;
 }
 
-export class ProductRequest {
-  name!: string;
-  productId!: number;
-  brand!: string;
-  category!: string;
-  price!: number;
-  onSale!: boolean;
-  location!: string;
+export interface ProductRequest {
+  name: string;
+  productId: number;
+  brand: string;
+  category: string;
+  price: number;
+  onSale: boolean;
+  location: string;
+}
+
+export interface BatchRequest {
+  batchId: number;
+  quantities: number;
+  cost: number;
+  manufacturer: string;
+  purchasedDate: Date | undefined;
+  expirationDate: Date | undefined;
 }
 
 export interface NewProductStorage {
@@ -177,6 +199,6 @@ export interface NewBatchStorage {
   quantities: number;
   cost: number;
   manufacturer: string;
-  purchasedDate: Date;
-  expirationDate: Date;
+  purchasedDate: Date | undefined;
+  expirationDate: Date | undefined;
 }

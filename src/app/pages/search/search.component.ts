@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ProductStorage, ProductsService } from 'src/app/services/products.service';
+import { ProductStorage, ProductsService} from 'src/app/services/products.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatSort } from '@angular/material/sort';
@@ -82,6 +82,9 @@ export class SearchComponent implements OnInit {
   }
 
   handleSearch() {
+    this.paginatorSetUp();
+    this.allProducts.sort = this.sort;
+
     if (this.keyword.trim().length != 0) {
       this.productService.searchProducts(this.keyword.toLocaleLowerCase(), this.selectedCategory)
       .subscribe(result => {
@@ -92,8 +95,6 @@ export class SearchComponent implements OnInit {
       this.productService.getProductsByCategory(this.selectedCategory)
       .subscribe(result => this.allProducts = new MatTableDataSource(result)); 
     }
-    this.paginatorSetUp();
-    this.allProducts.sort = this.sort;
   }
 
   selectChipChange($event: any, category: string) {
@@ -150,7 +151,14 @@ export class SearchComponent implements OnInit {
   handleAddBatch() {
     const dialogRef = this.addBatchDialog.open(EditBatchPopUpComponent, {
       data: {
-        batch: null,
+        batch: {
+          productId: this.expandedProduct.productId,
+          quantities: 0,
+          cost: 0,
+          manufacturer: "",
+          purchasedDate: undefined,
+          expirationDate: undefined
+        },
         title: 'Create Batch'
       }
     });

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { NewProductStorage, ProductRequest, ProductsService, ProductStorage } from 'src/app/services/products.service';
+import { NewProductStorage, ProductsService, ProductStorage } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-edit-product',
@@ -16,7 +16,7 @@ export class EditProductComponent implements OnInit {
   emptyProduct: boolean = true;
   changed: boolean = false;
 
-  constructor(private productsService: ProductsService) {
+  constructor(public productsService: ProductsService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -40,42 +40,51 @@ export class EditProductComponent implements OnInit {
   }
 
   updateProduct() {
+    debugger;
     this.getSelectedProduct()
-    if (this.changed) {
-      this.productsService.updateProduct(this.selectedProduct);
-    }
+    // if (this.changed) {
+    //   this.productsService.updateProduct(this.selectedProduct);
+    // }
+    this.productsService.updateProduct(this.selectedProduct);
   }
 
   getSelectedProduct() {
-    if (this.selectedProduct.name != this.productForm.get('name').value) {
-      this.selectedProduct.name = this.productForm.get('name').value;
-      this.changed = true;
-    }
+    // if (this.selectedProduct.name != this.productForm.get('name').value) {
+    //   this.selectedProduct.name = this.productForm.get('name').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedProduct.brand != this.productForm.get('brand').value) {
-      this.selectedProduct.brand = this.productForm.get('brand').value;
-      this.changed = true;
-    }
+    // if (this.selectedProduct.brand != this.productForm.get('brand').value) {
+    //   this.selectedProduct.brand = this.productForm.get('brand').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedProduct.category != this.productForm.get('category').value) {
-      this.selectedProduct.category = this.productForm.get('category').value;
-      this.changed = true;
-    }
+    // if (this.selectedProduct.category != this.productForm.get('category').value) {
+    //   this.selectedProduct.category = this.productForm.get('category').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedProduct.price != this.productForm.get('price').value) {
-      this.selectedProduct.price = this.productForm.get('price').value;
-      this.changed = true;
-    }
+    // if (this.selectedProduct.price != this.productForm.get('price').value) {
+    //   this.selectedProduct.price = this.productForm.get('price').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedProduct.location != this.productForm.get('location').value) {
-      this.selectedProduct.location = this.productForm.get('location').value;
-      this.changed = true;
-    }
+    // if (this.selectedProduct.location != this.productForm.get('location').value) {
+    //   this.selectedProduct.location = this.productForm.get('location').value;
+    //   this.changed = true;
+    // }
 
-    if (this.selectedProduct.onSale != this.productsService.stringConversion(this.productForm.get('onSale').value)) {
-      this.selectedProduct.onSale = this.productsService.stringConversion(this.productForm.get('onSale').value);
-      this.changed = true;
-    }
+    // if (this.selectedProduct.onSale != this.productsService.stringConversion(this.productForm.get('onSale').value)) {
+    //   this.selectedProduct.onSale = this.productsService.stringConversion(this.productForm.get('onSale').value);
+    //   this.changed = true;
+    // }
+
+    this.selectedProduct.name = this.productForm.get('name').value;
+    this.selectedProduct.brand = this.productForm.get('brand').value;
+    this.selectedProduct.category = this.productForm.get('category').value;
+    this.selectedProduct.price = this.productForm.get('price').value;
+    this.selectedProduct.location = this.productForm.get('location').value;
+    this.selectedProduct.onSale = this.productsService.stringConversion(this.productForm.get('onSale').value);
 
     return this.selectedProduct;
   }
