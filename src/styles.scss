@@ -99,11 +99,10 @@ th.mat-sort-header-sorted {
 }
 
 .edit-input {
-  margin: 10px 10px 10px 0px;
+  margin: 10px 10px 10px 0px !important;
 }
 
 .input-field-name{
-  margin-left: 8px;
   min-width: 20%;
 }
 
@@ -154,7 +153,7 @@ th.mat-sort-header-sorted {
 }
 
 .delete-icon-space {
-  margin: 30px;
+  margin: 30px !important;
 }
 
 .pop-up-buttons{
@@ -167,31 +166,31 @@ th.mat-sort-header-sorted {
 }
 
 tr.detail-row {
-  height: 0;
+  height: 0 !important;
 }
 
 tr.element-row:not(.example-expanded-row):hover {
-  background: whitesmoke;
+  background: whitesmoke !important;
 }
 
 tr.element-row:not(.example-expanded-row):active {
-  background: #efefef;
+  background: #efefef !important;
 }
 
 .element-row td {
-  border-bottom-width: 0;
+  border-bottom-width: 0 !important;
 }
 
 .element-detail {
-  overflow: hidden;
-  display: flex;
+  overflow: hidden !important;
+  display: flex !important;
 }
 
 .search-box {
-  min-width: 500px;
-  padding: 0 20px 0 0;
+  min-width: 500px !important;
+  padding: 0 20px 0 0 !important;
 }
 
  .search-condition {
-  margin: 50px;
+  margin: 50px !important;
 }
