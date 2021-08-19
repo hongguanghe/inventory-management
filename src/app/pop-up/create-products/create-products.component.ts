@@ -1,5 +1,5 @@
 import { Component, Inject, Input, OnInit, ViewChild, ViewChildren } from '@angular/core';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditBatchComponent } from 'src/app/pages/edit-batch/edit-batch.component';
 import { EditProductComponent } from 'src/app/pages/edit-product/edit-product.component';
 import { NewBatchStorage, NewProductStorage, ProductsService } from 'src/app/services/products.service';
@@ -15,7 +15,9 @@ export class CreateProductsComponent implements OnInit {
   @ViewChild(EditProductComponent) createProduct: any
   @ViewChild(EditBatchComponent) createBatches: any
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: string[], private productService: ProductsService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: string[], 
+  private productService: ProductsService,
+    private dialogRef: MatDialogRef<CreateProductsComponent>) {
     this.newProduct = {
       brand : "",
       name: "New Product",
@@ -64,8 +66,8 @@ export class CreateProductsComponent implements OnInit {
       this.createBatches.getSelectedBatch();
     }
     let product = this.createProduct.getSelectedProduct();
-    debugger
     this.productService.createProduct(product);
+    this.dialogRef.close();
   }
 
   

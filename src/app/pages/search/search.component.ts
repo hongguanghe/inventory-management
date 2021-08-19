@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ProductStorage, ProductsService} from 'src/app/services/products.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -44,7 +44,8 @@ export class SearchComponent implements OnInit {
   
   constructor(private productService: ProductsService, private fb: FormBuilder, 
     public confirmationDialog: MatDialog, public editProductDialog: MatDialog,
-    public createProductDialog: MatDialog, public addBatchDialog: MatDialog) {
+    public createProductDialog: MatDialog, public addBatchDialog: MatDialog,
+    private changeDetectorRefs: ChangeDetectorRef) {
     this.options = fb.group({
       hideRequired: this.hideRequiredControl,
       floatLabel: this.floatLabelControl,
@@ -63,14 +64,13 @@ export class SearchComponent implements OnInit {
     this.productService.getAllProducts()
       .subscribe(products => {
         this.allProducts = new MatTableDataSource(products);
-        this.allProducts.sort = this.sort;
-        this.paginatorSetUp();
+        this.refresh();
       });
   }
 
   async getAllCategories() {
-    (await this.productService.fetchCategories())
-      .subscribe((categories: string[]) => {
+    let response = await this.productService.fetchCategories();
+    response.subscribe((categories: string[]) => {
         this.allCategories = categories;
         this.allChips = ["All"];
         this.allChips = this.allChips.concat(this.allCategories);
@@ -82,8 +82,6 @@ export class SearchComponent implements OnInit {
   }
 
   handleSearch() {
-    this.paginatorSetUp();
-    this.allProducts.sort = this.sort;
 
     if (this.keyword.trim().length != 0) {
       this.productService.searchProducts(this.keyword.toLocaleLowerCase(), this.selectedCategory)
@@ -95,6 +93,7 @@ export class SearchComponent implements OnInit {
       this.productService.getProductsByCategory(this.selectedCategory)
       .subscribe(result => this.allProducts = new MatTableDataSource(result)); 
     }
+    this.refresh();
   }
 
   selectChipChange($event: any, category: string) {
@@ -109,11 +108,10 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  paginatorSetUp() {
+  refresh() {
     this.allProducts.paginator = this.paginator;
-    if (this.allProducts.paginator) {
-      this.allProducts.paginator.firstPage();
-    }
+    this.allProducts.sort = this.sort;
+    this.changeDetectorRefs.detectChanges()
   }
 
   handleDelete(productId: number) {
@@ -132,23 +130,17 @@ export class SearchComponent implements OnInit {
   }
 
   handleEdit(product: ProductStorage) {
-    const dialogRef = this.editProductDialog.open(EditProductPopUpComponent, {
+    this.editProductDialog.open(EditProductPopUpComponent, {
       data: {
         product: product,
         allCategories: this.allCategories
       },
       panelClass: 'edit-product-dialog'
     })
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        // TODO: update 
-      }
-    });
   }
 
   handleAddBatch() {
-    const dialogRef = this.addBatchDialog.open(EditBatchPopUpComponent, {
+    this.addBatchDialog.open(EditBatchPopUpComponent, {
       data: {
         batch: {
           productId: this.expandedProduct.productId,
@@ -161,16 +153,10 @@ export class SearchComponent implements OnInit {
         title: 'Create Batch'
       }
     });
-
-    dialogRef.afterClosed().subscribe(dialogResult => {
-      if (dialogResult) {
-        // TODO: update 
-      }
-    });
   }
 
   handleAddProduct() {
-    const dialogRef = this.editProductDialog.open(CreateProductsComponent, {
+    this.editProductDialog.open(CreateProductsComponent, {
       data: {
         allCategories: this.allCategories
       },
