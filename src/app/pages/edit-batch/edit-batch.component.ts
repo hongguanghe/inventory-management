@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
 import { BatchStorage, NewBatchStorage, ProductsService } from 'src/app/services/products.service';
 
 @Component({
@@ -16,7 +18,7 @@ export class EditBatchComponent implements OnInit {
   changed: boolean = true;
   emptyBatch: boolean = true
 
-  constructor(private productsService: ProductsService) {
+  constructor(private dialogRef: MatDialogRef<EditBatchPopUpComponent>, private productsService: ProductsService) {
   }
 
   ngOnInit(): void {
@@ -41,52 +43,19 @@ export class EditBatchComponent implements OnInit {
     return this.batchForm.valid;
   }
 
-  updateBatch() {
-    debugger
+  async updateBatch() {
     this.getSelectedBatch();
-    // if (this.changed) {
-    //   if(this.editingMode) {
-    //     this.productsService.updateBatch(this.selectedBatch);
-    //   }
-    //   else {
-    //     this.productsService.createBatch(this.selectedBatch);
-    //   }
-    // }
 
     if (this.editingMode && this.modeChecking()) {
       this.productsService.updateBatch(this.selectedBatch);
     }
     else {
-      this.productsService.createBatch(this.selectedBatch);
+      this.productsService.createBatch(this.selectedBatch)
     }
+    this.dialogRef.close();
   }
 
   getSelectedBatch() {
-    // if (this.selectedBatch.quantities != this.batchForm.get('quantities').value) {
-    //   this.selectedBatch.quantities = this.batchForm.get('quantities').value;
-    //   this.changed = true;
-    // }
-
-    // if (this.selectedBatch.manufacturer != this.batchForm.get('manufacturer').value) {
-    //   this.selectedBatch.manufacturer = this.batchForm.get('manufacturer').value;
-    //   this.changed = true;
-    // }
-
-    // if (this.selectedBatch.cost != this.batchForm.get('cost').value) {
-    //   this.selectedBatch.cost = this.batchForm.get('cost').value;
-    //   this.changed = true;
-    // }
-
-    // if (this.selectedBatch.expirationDate != this.batchForm.get('expirationDate').value) {
-    //   this.selectedBatch.expirationDate = this.batchForm.get('expirationDate').value;
-    //   this.changed = true;
-    // }
-
-    // if (this.selectedBatch.purchasedDate != this.batchForm.get('purchasedDate').value) {
-    //   this.selectedBatch.purchasedDate = this.batchForm.get('purchasedDate').value;
-    //   this.changed = true;
-    // }
-
     this.selectedBatch.quantities = this.batchForm.get('quantities').value;
     this.selectedBatch.manufacturer = this.batchForm.get('manufacturer').value;
     this.selectedBatch.cost = this.batchForm.get('cost').value;

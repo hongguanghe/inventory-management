@@ -6,7 +6,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 import { ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
-import { EditBatchComponent } from '../edit-batch/edit-batch.component';
 import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
 
 
@@ -68,7 +67,7 @@ export class AssociatedBatchesComponent implements OnInit {
   }
 
   handleEditBatch(batch: BatchStorage) {
-    const dialogRef = this.batchDialog.open(EditBatchPopUpComponent, {
+    this.batchDialog.open(EditBatchPopUpComponent, {
       data: {
         batch: batch,
         title: 'Edit Batch'
