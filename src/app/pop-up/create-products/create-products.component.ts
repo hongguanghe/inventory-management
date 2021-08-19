@@ -52,7 +52,6 @@ export class CreateProductsComponent implements OnInit {
   }
 
   formValidation() {
-    console.log("calling formvalidation functions in children")
     return !(this.createProduct.formValidationCheck() && this.createBatches.formValidationCheck());
   }
 

@@ -132,7 +132,6 @@ export class SearchComponent implements OnInit {
   }
 
   handleEdit(product: ProductStorage) {
-    console.log(product.name)
     const dialogRef = this.editProductDialog.open(EditProductPopUpComponent, {
       data: {
         product: product,
