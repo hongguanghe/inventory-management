@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
-import { BatchStorage, NewBatchStorage, ProductsService } from 'src/app/services/products.service';
+import { BatchesService } from 'src/app/services/batches.service';
+import { BatchStorage, NewBatchStorage } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-edit-batch',
@@ -18,7 +19,7 @@ export class EditBatchComponent implements OnInit {
   changed: boolean = true;
   emptyBatch: boolean = true
 
-  constructor(private dialogRef: MatDialogRef<EditBatchPopUpComponent>, private productsService: ProductsService) {
+  constructor(private dialogRef: MatDialogRef<EditBatchPopUpComponent>, private batchesService: BatchesService) {
   }
 
   ngOnInit(): void {
@@ -47,10 +48,10 @@ export class EditBatchComponent implements OnInit {
     this.getSelectedBatch();
 
     if (this.editingMode && this.modeChecking()) {
-      this.productsService.updateBatch(this.selectedBatch);
+      this.batchesService.updateBatch(this.selectedBatch);
     }
     else {
-      this.productsService.createBatch(this.selectedBatch)
+      this.batchesService.createBatch(this.selectedBatch)
     }
     this.dialogRef.close();
   }

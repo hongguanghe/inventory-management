@@ -12,7 +12,6 @@ import { environment } from 'src/environments/environment';
 
 export class ProductsService {
 
-  allCategories: string[] | any | undefined
   baseUrl: string = environment.baseUrl;
   headers = new HttpHeaders().set('Content-Type', 'application/json');
 
@@ -20,23 +19,6 @@ export class ProductsService {
     
   }
 
-  updateBatch(selectedBatch: any) {
-    let API_URL = `${this.baseUrl}/batches/batch/${selectedBatch.batchId}`;
-    let parameters = new HttpParams()
-
-    this.http.put(API_URL, selectedBatch, { headers: this.headers, params: parameters, observe: 'response' })
-      .pipe(catchError(this.error))
-      .subscribe(() => this.openSnackBar("Batch Updated", "Dismiss", "default-snackbar"))
-  }
-
-  createBatch(selectedBatch: any) {
-    let API_URL = `${this.baseUrl}/batches/batch/create`;
-    let parameters = new HttpParams();
-    
-    this.http.post(API_URL, selectedBatch, { headers: this.headers, params: parameters, observe: 'response' })
-      .pipe(catchError(this.error))
-      .subscribe(() => this.openSnackBar("Batch Created", "Dismiss", "default-snackbar"))
-  }
 
   async fetchCategories(){
     let API_URL = `${this.baseUrl}/categories`;
@@ -57,16 +39,6 @@ export class ProductsService {
     let API_URL = `${this.baseUrl}/products/all`;
     return this.http.get<ProductStorage[]>(API_URL, {headers: this.headers})
     .pipe(catchError(this.error));
-  }
-
-  deleteBatchById(id: number){
-    let API_URL = `${this.baseUrl}/batches/batch/${id}`;
-    let parameters = new HttpParams()
-      .set('id', id)
-
-    this.http.delete(API_URL, { headers: this.headers, params: parameters, observe: 'response'})
-      .pipe(catchError(this.error))
-      .subscribe(() => this.openSnackBar("Batch Deleted", "Dismiss", "default-snackbar"))
   }
 
   searchProducts(keyword: string, category: string): Observable<ProductStorage[]>{

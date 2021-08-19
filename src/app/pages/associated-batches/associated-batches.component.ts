@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { BatchStorage, ProductsService, ProductStorage } from 'src/app/services/products.service';
+import { BatchStorage, ProductStorage } from 'src/app/services/products.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -7,6 +7,7 @@ import * as moment from 'moment';
 import { ConfirmationPopUpComponent } from 'src/app/pop-up/confirmation-pop-up/confirmation-pop-up.component';
 import { MatDialog } from '@angular/material/dialog';
 import { EditBatchPopUpComponent } from 'src/app/pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
+import { BatchesService } from 'src/app/services/batches.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class AssociatedBatchesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator | any;
   expandedBatch: BatchStorage | any;
 
-  constructor(private productService: ProductsService, public confirmationDialog: MatDialog,
+  constructor(private batchesService: BatchesService, public confirmationDialog: MatDialog,
     public batchDialog: MatDialog) {
     this.allBatches = [];
   }
@@ -61,7 +62,7 @@ export class AssociatedBatchesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.productService.deleteBatchById(id);
+        this.batchesService.deleteBatchById(id);
       }
     });
   }
