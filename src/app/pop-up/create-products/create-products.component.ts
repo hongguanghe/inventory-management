@@ -2,7 +2,7 @@ import { Component, Inject, Input, OnInit, ViewChild, ViewChildren } from '@angu
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { EditBatchComponent } from 'src/app/pages/edit-batch/edit-batch.component';
 import { EditProductComponent } from 'src/app/pages/edit-product/edit-product.component';
-import { NewBatchStorage, NewProductStorage, ProductsService } from 'src/app/services/products.service';
+import { NewProductStorage, ProductsService } from 'src/app/services/products.service';
 
 @Component({
   selector: 'app-create-products',
@@ -13,7 +13,7 @@ export class CreateProductsComponent implements OnInit {
 
   newProduct: NewProductStorage
   @ViewChild(EditProductComponent) createProduct: any
-  @ViewChild(EditBatchComponent) createBatches: any
+  @ViewChild(EditBatchComponent) createBatches: any = [];
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: string[], 
   private productService: ProductsService,
@@ -35,7 +35,6 @@ export class CreateProductsComponent implements OnInit {
         }
       ]
     };
-
   }
 
   ngOnInit(): void {
