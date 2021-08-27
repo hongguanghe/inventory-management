@@ -36,6 +36,7 @@ import { EditProductPopUpComponent } from './pop-up/edit-product-pop-up/edit-pro
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { EditBatchPopUpComponent } from './pop-up/edit-batch-pop-up/edit-batch-pop-up.component';
+import { AuthModule } from '@auth0/auth0-angular';
 
 export const apiBaseUrl : string = environment.baseUrl;
 
@@ -54,6 +55,10 @@ export const apiBaseUrl : string = environment.baseUrl;
     EditBatchPopUpComponent,
   ],
   imports: [
+    AuthModule.forRoot({
+      domain: 'dev-36e0xr0f.us.auth0.com',
+      clientId: 'zgjbKkTs2SM5Po6FWRS58JmZrnVbMmiE'
+    }),
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
